@@ -13,7 +13,7 @@ const userSchema = new Schema({
     },
     email: { 
         type: String, 
-        required: true,
+        required: true
     },
     password: {
         type: String, 
@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     timestamp: {
         type: Date,
-        default: new Date(),
+        default: new Date()
     }
 });
 
