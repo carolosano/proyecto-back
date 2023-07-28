@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
     res.send(`<h1>Soy el Back del MERN</h1>`)
 });
 
+/* Insertamos nuevos clientes */
 app.post('/usuarios', async (req, res) => {
     console.log(req.body);
     const { nombre, apellido, email, password } = req.body;
@@ -24,9 +25,12 @@ app.post('/usuarios', async (req, res) => {
     const nuevoUsuario = new Usuario(req.body);
     console.log(`1. Nuevo Usuario a guardar: ${nuevoUsuario}`);
     await nuevoUsuario.save();
+    res.json({
+        saludo: 'Dato Guardado'
+    })
 });
 
-
+/* Obtenemos toda la lista de clientes */
 app.get('/clientes', async (req, res) => {
     const personas = await Usuario.find({},       
         {
@@ -45,6 +49,28 @@ res.json({
     personas
 })
 })
+
+/* Eliminamos los datos del cliente */
+app.delete('/clientes/:id', async (req, res) =>{
+    const id = req.params.id;
+    console.log(id);
+
+    try {
+        const deleteUser = await Usuario.findByIdAndDelete(id);
+        console.log(deleteUser);
+        if (!deleteUser) {
+            return res.status(484).send();
+        }else{
+            console.log('Cliente Eliminado');
+            return res.status(200).send();
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
+
+})
+
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el Puerto ${PORT}`);
