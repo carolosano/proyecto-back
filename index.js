@@ -3,9 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv').config();
 const PORT = process.env.PORT;
 require('./conexion/conexion');
-const Usuario =require('./model/userModel');
+const Usuario = require('./model/userModel');
 const app = express();
-
 
 app.use(cors());
 app.use(express.json());
@@ -108,9 +107,8 @@ app.put('/clientes/:id', async (req, res) => {
 
 })
 
-
-
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el Puerto ${PORT}`);
 })
+
 
