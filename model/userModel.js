@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     timestamp: {
         type: Date,
-        default: new Date()
+        default: new Date(),
     }
 });
 

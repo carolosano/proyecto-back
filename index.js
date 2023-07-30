@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
     res.send(`<h1>Soy el Back del MERN</h1>`)
 });
 
+
 /* Insertamos nuevos clientes */
 app.post('/usuarios', async (req, res) => {
     console.log(req.body);
@@ -22,17 +23,24 @@ app.post('/usuarios', async (req, res) => {
 
     console.log(`Mi nombre es ${nombre}, mi apellido es ${apellido}, mi email es ${email} y el password ${password}`);
 
+       //4. si no Existe, creamos un nuevo usuario
     const nuevoUsuario = new Usuario(req.body);
+
     console.log(`1. Nuevo Usuario a guardar: ${nuevoUsuario}`);
+
     await nuevoUsuario.save();
+
     res.json({
-        saludo: 'Dato Guardado'
+        saludo: 'Dato guardado'
     })
+
+
 });
 
-/* Obtenemos toda la lista de clientes */
+/* obtenemos toda la lista de clientes */
 app.get('/clientes', async (req, res) => {
-    const personas = await Usuario.find({},       
+
+    const personas = await Usuario.find({},
         {
             "nombre": 1,
             "apellido": 1,
@@ -42,34 +50,64 @@ app.get('/clientes', async (req, res) => {
 
     console.log(personas);
 
-    let miDia = new Date().getDate();
-    console.log(miDia);
+    res.json({
+        personas 
+    })
 
-res.json({
-    personas
-})
 })
 
-/* Eliminamos los datos del cliente */
-app.delete('/clientes/:id', async (req, res) =>{
+/* Eliminalos los datos del cliente */
+app.delete('/clientes/:id', async (req, res) => {
+
     const id = req.params.id;
+    
     console.log(id);
-
+    
     try {
         const deleteUser = await Usuario.findByIdAndDelete(id);
         console.log(deleteUser);
-        if (!deleteUser) {
-            return res.status(484).send();
-        }else{
+        if(deleteUser){
             console.log('Cliente Eliminado');
             return res.status(200).send();
+        }else{
+            return res.status(404).send();
         }
     } catch (error) {
         console.log(error);
     }
 
+})
+
+/* Actualizamos los datos del cliente */
+app.put('/clientes/:id', async (req, res) => {
+
+    const id = req.params.id;
+
+    const data = {
+        nombre: req.body.nombre,
+        apellido: req.body.apellido,
+        email: req.body.email,
+        password: req.body.password
+    }
+
+    console.log(data);
+    console.log(id);
+    
+    try {
+        const updateUser = await Usuario.findByIdAndUpdate(id, data);
+        console.log(updateUser);
+        if(updateUser){
+            console.log('Cliente Actualizado');
+            return res.status(200).send();
+        }else{
+            return res.status(404).send();
+        }
+    } catch (error) {
+        console.log(error);
+    }
 
 })
+
 
 
 app.listen(PORT, () => {
