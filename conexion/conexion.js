@@ -16,3 +16,4 @@ mongoose.connect(MONGOLOCAL, {
     .catch((error) => {
         console.log(`El error es: ${error}`)
     })
+

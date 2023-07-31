@@ -110,5 +110,3 @@ app.put('/clientes/:id', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el Puerto ${PORT}`);
 })
-
-
